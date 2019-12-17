@@ -106,7 +106,7 @@ public final class SubscriptionUtil {
     public static String updateRedirectUrl(String redirectUrl, ResponseRedirectDTO responseRedirectDTO, RequestTrackerEntity requestTrackerEntity) {
         String newUrl = redirectUrl;
 
-        newUrl = newUrl + "?msisdn=" + responseRedirectDTO.getMsisdn() + "&status=" + responseRedirectDTO.getStatus() + "&transno=" + requestTrackerEntity.getProductTrackId();
+        newUrl = newUrl + "?msisdn=" + responseRedirectDTO.getMsisdn() + "&status=" + responseRedirectDTO.getStatus() + "&transno=" + requestTrackerEntity.getProductTrackId() + "&packageid=" + requestTrackerEntity.getProductId();
 
         return newUrl;
     }

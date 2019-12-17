@@ -30,7 +30,7 @@ public class WebController {
             httpServletResponse.setStatus(302);
         } else {
             httpServletResponse.setHeader("Location", "redirect");
-            httpServletResponse.setStatus(302);;
+            httpServletResponse.setStatus(302);
         }
     }
 }
