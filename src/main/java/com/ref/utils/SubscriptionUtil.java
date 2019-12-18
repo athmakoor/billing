@@ -14,6 +14,7 @@ import javax.net.ssl.X509TrustManager;
 import com.ref.bean.ResponseRedirectDTO;
 import com.ref.bean.SubscriptionDTO;
 import com.ref.bean.UnsubscribeDTO;
+import com.ref.bean.jpa.ProductEntity;
 import com.ref.bean.jpa.RequestTrackerEntity;
 
 import static org.springframework.http.HttpHeaders.USER_AGENT;
@@ -32,10 +33,10 @@ public final class SubscriptionUtil {
         return updatedUrl;
     }
 
-    public static String updateSubscribeUrl(String url, RequestTrackerEntity data) {
+    public static String updateSubscribeUrl(String url, RequestTrackerEntity data, ProductEntity productEntity) {
         String updatedUrl = url;
 
-        updatedUrl = updatedUrl.replace("@productId@", data.getProductId());
+        updatedUrl = updatedUrl.replace("@productId@", productEntity.getProductId());
         updatedUrl = updatedUrl.replace("@transno@", String.valueOf(data.getId()));
 
         return updatedUrl;
@@ -106,7 +107,8 @@ public final class SubscriptionUtil {
     public static String updateRedirectUrl(String redirectUrl, ResponseRedirectDTO responseRedirectDTO, RequestTrackerEntity requestTrackerEntity) {
         String newUrl = redirectUrl;
 
-        newUrl = newUrl + "?msisdn=" + responseRedirectDTO.getMsisdn() + "&status=" + responseRedirectDTO.getStatus() + "&transno=" + requestTrackerEntity.getProductTrackId() + "&packageid=" + requestTrackerEntity.getProductId();
+        newUrl = newUrl + "?msisdn=" + responseRedirectDTO.getMsisdn() + "&status=" + responseRedirectDTO.getStatus()
+                + "&transno=" + requestTrackerEntity.getProductTrackId() + "&packageid=" + requestTrackerEntity.getPackageId();
 
         return newUrl;
     }

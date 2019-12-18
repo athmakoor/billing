@@ -29,6 +29,9 @@ public class ProductEntity implements Serializable {
     @Column(name = "product_id")
     private String productId;
 
+    @Column(name = "package_id")
+    private String packageId;
+
     @Column(name = "provider_key")
     private String providerKey;
 
@@ -64,6 +67,14 @@ public class ProductEntity implements Serializable {
 
     public void setProductId(String productId) {
         this.productId = productId;
+    }
+
+    public String getPackageId() {
+        return packageId;
+    }
+
+    public void setPackageId(String packageId) {
+        this.packageId = packageId;
     }
 
     public String getProviderKey() {

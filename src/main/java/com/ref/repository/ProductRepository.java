@@ -7,5 +7,5 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import com.ref.bean.jpa.ProductEntity;
 
 public interface ProductRepository extends PagingAndSortingRepository<ProductEntity, Integer> {
-    Optional<ProductEntity> findByProviderKeyAndProductId(String providerKey, String productId);
+    Optional<ProductEntity> findByProviderKeyAndPackageId(String providerKey, String packageId);
 }

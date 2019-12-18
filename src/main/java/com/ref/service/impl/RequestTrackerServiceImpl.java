@@ -38,7 +38,7 @@ public class RequestTrackerServiceImpl implements RequestTrackerService {
         RequestTrackerEntity requestTrackerEntity = new RequestTrackerEntity();
         RequestTrackerEntity requestTrackerEntitySaved;
         requestTrackerEntity.setCreatedAt(TimeUtil.getCurrentUTCTime());
-        requestTrackerEntity.setProductId(data.getPackageid());
+        requestTrackerEntity.setPackageId(data.getPackageid());
         requestTrackerEntity.setProviderKey(data.getKey());
         requestTrackerEntity.setType("subscribe");
         requestTrackerEntity.setProductTrackId(data.getTransno());
@@ -50,7 +50,11 @@ public class RequestTrackerServiceImpl implements RequestTrackerService {
         if (providerEntityOptional.isPresent()) {
             ProviderEntity providerEntity = providerEntityOptional.get();
 
-            return SubscriptionUtil.updateSubscribeUrl(providerEntity.getSubscriptionUrl(), requestTrackerEntitySaved);
+            Optional<ProductEntity> productEntityOptional = productRepository.findByProviderKeyAndPackageId(requestTrackerEntity.getProviderKey(), requestTrackerEntity.getPackageId());
+
+            if (productEntityOptional.isPresent()) {
+                return SubscriptionUtil.updateSubscribeUrl(providerEntity.getSubscriptionUrl(), requestTrackerEntitySaved, productEntityOptional.get());
+            }
         }
 
         return null;
@@ -61,7 +65,7 @@ public class RequestTrackerServiceImpl implements RequestTrackerService {
         RequestTrackerEntity requestTrackerEntity = new RequestTrackerEntity();
         RequestTrackerEntity requestTrackerEntitySaved;
         requestTrackerEntity.setCreatedAt(TimeUtil.getCurrentUTCTime());
-        requestTrackerEntity.setProductId(data.getPackageid());
+        requestTrackerEntity.setPackageId(data.getPackageid());
         requestTrackerEntity.setProviderKey(data.getKey());
         requestTrackerEntity.setType("unsubscribe");
         requestTrackerEntity.setProductTrackId(data.getTransno());
@@ -73,7 +77,11 @@ public class RequestTrackerServiceImpl implements RequestTrackerService {
         if (providerEntityOptional.isPresent()) {
             ProviderEntity providerEntity = providerEntityOptional.get();
 
-            return SubscriptionUtil.updateSubscribeUrl(providerEntity.getUnsubscribeUrl(), requestTrackerEntitySaved);
+            Optional<ProductEntity> productEntityOptional = productRepository.findByProviderKeyAndPackageId(requestTrackerEntity.getProviderKey(), requestTrackerEntity.getPackageId());
+
+            if (productEntityOptional.isPresent()) {
+                return SubscriptionUtil.updateSubscribeUrl(providerEntity.getUnsubscribeUrl(), requestTrackerEntitySaved, productEntityOptional.get());
+            }
         }
 
         return null;
@@ -121,7 +129,7 @@ public class RequestTrackerServiceImpl implements RequestTrackerService {
             String notificationType = requestTrackerEntity.getType();
 
             if ("subscribe".equals(notificationType) || "unsubscribe".equals(notificationType)) {
-                Optional<ProductEntity> productEntityOptional = productRepository.findByProviderKeyAndProductId(requestTrackerEntity.getProviderKey(), requestTrackerEntity.getProductId());
+                Optional<ProductEntity> productEntityOptional = productRepository.findByProviderKeyAndPackageId(requestTrackerEntity.getProviderKey(), requestTrackerEntity.getPackageId());
 
                 if (productEntityOptional.isPresent()) {
                     String notificationUrl = productEntityOptional.get().getNotificationUrl();
