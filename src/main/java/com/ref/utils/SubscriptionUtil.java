@@ -29,6 +29,7 @@ public final class SubscriptionUtil {
 
         updatedUrl = updatedUrl.replace("@productId@", data.getPackageid());
         updatedUrl = updatedUrl.replace("@transno@", data.getTransno());
+        updatedUrl = updatedUrl.replace("@packageid@", data.getPackageid());
 
         return updatedUrl;
     }
@@ -38,6 +39,7 @@ public final class SubscriptionUtil {
 
         updatedUrl = updatedUrl.replace("@productId@", productEntity.getProductId());
         updatedUrl = updatedUrl.replace("@transno@", String.valueOf(data.getId()));
+        updatedUrl = updatedUrl.replace("@packageid@", productEntity.getPackageId());
 
         return updatedUrl;
     }
@@ -47,6 +49,7 @@ public final class SubscriptionUtil {
 
         updatedUrl = updatedUrl.replace("@productId@", data.getPackageid());
         updatedUrl = updatedUrl.replace("@transno@", data.getTransno());
+        updatedUrl = updatedUrl.replace("@packageid@", data.getPackageid());
         updatedUrl = updatedUrl.replace("@MSISDN@", data.getMsisdn());
 
         return updatedUrl;
