@@ -32,4 +32,8 @@ public final class TimeUtil {
     public static LocalDateTime getStringUTCTime(final String time) {
         return LocalDateTime.parse(time, RFC_1123_DATE_TIME);
     }
+
+    public static ZonedDateTime getLocalTime(final LocalDateTime time) {
+        return time.atZone(ZoneId.of("Asia/Muscat"));
+    }
 }

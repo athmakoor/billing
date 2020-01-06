@@ -41,6 +41,9 @@ public class ProductEntity implements Serializable {
     @Column(name = "redirect_url")
     private String redirectUrl;
 
+    @Column(name = "failure_redirect_url")
+    private String failureRedirectUrl;
+
     @Column(name = "created_at")
     @Convert(converter = UTCDateTimeConverter.class)
     private ZonedDateTime createdAt;
@@ -107,5 +110,13 @@ public class ProductEntity implements Serializable {
 
     public void setRedirectUrl(String redirectUrl) {
         this.redirectUrl = redirectUrl;
+    }
+
+    public String getFailureRedirectUrl() {
+        return failureRedirectUrl;
+    }
+
+    public void setFailureRedirectUrl(String failureRedirectUrl) {
+        this.failureRedirectUrl = failureRedirectUrl;
     }
 }

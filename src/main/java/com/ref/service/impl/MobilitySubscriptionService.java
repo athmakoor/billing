@@ -34,6 +34,7 @@ public class MobilitySubscriptionService implements SubscriptionService {
             return SubscriptionUtil.getRequest(subscriptionUrl);
 
         }
+
         return null;
     }
 

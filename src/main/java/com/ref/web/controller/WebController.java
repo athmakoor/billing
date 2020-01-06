@@ -3,6 +3,7 @@ package com.ref.web.controller;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Controller;
@@ -22,8 +23,9 @@ public class WebController {
     private RequestTrackerService requestTrackerService;
 
     @GetMapping("/redirect")
-    public void redirect(final Map<String, Object> model, @RequestParam Map<String, String> requestParams, HttpServletResponse httpServletResponse) {
+    public void redirect(final Map<String, Object> model, @RequestParam Map<String, String> requestParams, HttpServletRequest request, HttpServletResponse httpServletResponse) {
         String tansNoString = requestParams.get("transno");
+        webService.updateDefaultModel(model, request, "redirect");
 
         if (tansNoString != null) {
             httpServletResponse.setHeader("Location", requestTrackerService.getResponseRedirectionUrl(requestParams));
@@ -32,5 +34,10 @@ public class WebController {
             httpServletResponse.setHeader("Location", "redirect");
             httpServletResponse.setStatus(302);
         }
+    }
+
+    @GetMapping("/**")
+    public void others(final Map<String, Object> model, @RequestParam Map<String, String> requestParams, HttpServletRequest request, HttpServletResponse httpServletResponse) {
+        webService.updateDefaultModel(model, request, "redirect");
     }
 }

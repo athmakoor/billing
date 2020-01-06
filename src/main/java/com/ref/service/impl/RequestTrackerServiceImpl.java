@@ -14,6 +14,7 @@ import com.ref.bean.UnsubscribeDTO;
 import com.ref.bean.jpa.ProductEntity;
 import com.ref.bean.jpa.ProviderEntity;
 import com.ref.bean.jpa.RequestTrackerEntity;
+import com.ref.constant.ErrorCode;
 import com.ref.exception.ItemNotFoundException;
 import com.ref.repository.ProductRepository;
 import com.ref.repository.ProviderRepository;
@@ -35,6 +36,18 @@ public class RequestTrackerServiceImpl implements RequestTrackerService {
 
     @Override
     public String saveAndGetSubscriptionRedirectUrl(SubscriptionDTO data) {
+        if (data.getPackageid() == null) {
+            throw new ItemNotFoundException(ErrorCode.MISSING_PACKAGE_ID);
+        }
+
+        if (data.getKey() == null) {
+            throw new ItemNotFoundException(ErrorCode.MISSING_KEY);
+        }
+
+        if (data.getTransno() == null) {
+            throw new ItemNotFoundException(ErrorCode.MISSING_TRANSNO);
+        }
+
         RequestTrackerEntity requestTrackerEntity = new RequestTrackerEntity();
         RequestTrackerEntity requestTrackerEntitySaved;
         requestTrackerEntity.setCreatedAt(TimeUtil.getCurrentUTCTime());
@@ -54,14 +67,28 @@ public class RequestTrackerServiceImpl implements RequestTrackerService {
 
             if (productEntityOptional.isPresent()) {
                 return SubscriptionUtil.updateSubscribeUrl(providerEntity.getSubscriptionUrl(), requestTrackerEntitySaved, productEntityOptional.get());
+            } else {
+                throw new ItemNotFoundException(ErrorCode.INVALID_PACKAGE_PROVIDER_ID);
             }
+        } else {
+            throw new ItemNotFoundException(ErrorCode.INVALID_KEY);
         }
-
-        return null;
     }
 
     @Override
     public String saveAndGetUnSubscribeRedirectUrl(UnsubscribeDTO data) {
+        if (data.getPackageid() == null) {
+            throw new ItemNotFoundException(ErrorCode.MISSING_PACKAGE_ID);
+        }
+
+        if (data.getKey() == null) {
+            throw new ItemNotFoundException(ErrorCode.MISSING_KEY);
+        }
+
+        if (data.getTransno() == null) {
+            throw new ItemNotFoundException(ErrorCode.MISSING_TRANSNO);
+        }
+
         RequestTrackerEntity requestTrackerEntity = new RequestTrackerEntity();
         RequestTrackerEntity requestTrackerEntitySaved;
         requestTrackerEntity.setCreatedAt(TimeUtil.getCurrentUTCTime());
@@ -81,10 +108,12 @@ public class RequestTrackerServiceImpl implements RequestTrackerService {
 
             if (productEntityOptional.isPresent()) {
                 return SubscriptionUtil.updateSubscribeUrl(providerEntity.getUnsubscribeUrl(), requestTrackerEntitySaved, productEntityOptional.get());
+            } else {
+                throw new ItemNotFoundException(ErrorCode.INVALID_PACKAGE_PROVIDER_ID);
             }
+        } else {
+            throw new ItemNotFoundException(ErrorCode.INVALID_KEY);
         }
-
-        return null;
     }
 
     @Override
@@ -147,13 +176,13 @@ public class RequestTrackerServiceImpl implements RequestTrackerService {
 
                     return SubscriptionUtil.updateRedirectUrl(redirectUrl, responseRedirectDTO, requestTrackerEntity);
                 } else {
-                    throw new ItemNotFoundException("Invalid Product ID sent");
+                    throw new ItemNotFoundException(ErrorCode.INVALID_PACKAGE_PROVIDER_ID);
                 }
             }
 
             return "";
         } else {
-            throw new ItemNotFoundException("Transaction ID not sent");
+            throw new ItemNotFoundException(ErrorCode.MISSING_TRANSNO);
         }
     }
 }
